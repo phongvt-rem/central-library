@@ -17,4 +17,9 @@ class BookService
     {
         return $this->bookRepo->all();
     }
+
+    public function deleteBook($id)
+    {
+        return $this->bookRepo->delete($id);
+    }
 }

@@ -21,6 +21,19 @@ class BookController extends Controller
 
     public function add()
     {
-        return view('books.book-form');
+        $title = 'Add New Book';
+        return view('books.book-form', compact('title'));
+    }
+
+    public function edit($id)
+    {
+        $title = 'Edit Book';
+        return view('books.book-form', compact('title'));
+    }
+
+    public function destroy($id)
+    {
+        $this->bookService->deleteBook($id);
+        return redirect()->route('books.index');
     }
 }
