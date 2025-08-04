@@ -15,6 +15,7 @@ class BookSeeder extends Seeder
     {  
         Book::create([
             'title' => 'A Study in Scarlet',
+            'cover_url' => '/cover_img/book1.webp',
             'author_id' => 1, // Arthur Conan Doyle
             'category_id' => 1, // Fiction
             'published_year' => 1934,
@@ -22,6 +23,7 @@ class BookSeeder extends Seeder
 
         Book::create([
             'title' => 'Murder on the Orient Express',
+            'cover_url' => '/cover_img/book2.webp',
             'author_id' => 2, // Agatha Christie
             'category_id' => 1, // Fiction
             'published_year' => 1934,
