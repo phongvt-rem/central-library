@@ -36,4 +36,27 @@ class BookService
 
         return $this->bookRepo->create($data);
     }
+
+    public function findBookById($id)
+    {
+        return $this->bookRepo->find($id);
+    }
+
+    public function updateBook(int $id, array $data)
+    {
+        $target_book = $this->bookRepo->find($id);
+        Storage::disk('public')->delete($target_book->cover_url);
+
+        $file = $data['cover_url'];
+        $fileName = 'book' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
+        $path = $file->storeAs('cover_img', $fileName, 'public');
+        $data['cover_url'] = $path;
+
+        return $this->bookRepo->update($id, $data);
+    }
+
+    public function updateBookWithoutCoverImg(int $id, array $data)
+    {
+        return $this->bookRepo->update($id, $data);
+    }
 }

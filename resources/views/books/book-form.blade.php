@@ -18,8 +18,11 @@
         </div>
     @endif
 
-    <form class="w-50 mx-auto" action="{{ route($destination_route) }}" method="POST" enctype="multipart/form-data">
+    <form class="w-50 mx-auto" action="{{ $action }}" method='POST' enctype="multipart/form-data">
         @csrf
+        @if ($method !== 'POST')
+            @method($method)
+        @endif
 
         <div class="mb-3">
             <label for="title" class="form-label">Book title</label>
@@ -29,14 +32,21 @@
 
         <div class="mb-3">
             <label for="cover_url" class="form-label">Cover Image</label>
-            <input type="file" class="form-control" name="cover_url" id="cover_url" required>
+            <input type="file" class="form-control" name="cover_url" id="cover_url">
         </div>
 
         <div class="mb-3">
             <label for="author_id" class="form-label">Author</label>
             <select id="author_id" name="author_id" class="form-select" aria-label="Default select example">
                 @foreach ($author_list as $author)   
-                    <option value={{ $author->id }}>{{ $author->name }}</option>
+                    <option 
+                    value={{ $author->id }}
+                    @if ($isEdit && $book->author_id == $author->id)
+                        selected
+                    @endif
+                    >
+                        {{ $author->name }}
+                    </option>
                 @endforeach
             </select>
         </div>
@@ -45,7 +55,14 @@
             <label for="category_id" class="form-label">Category</label>
             <select name="category_id" id="category_id" class="form-select" aria-label="Default select example">
                 @foreach ($category_list as $category)   
-                    <option value={{ $category->id }}>{{ $category->name }}</option>
+                    <option 
+                    value={{ $category->id }}
+                    @if ($isEdit && $book->category_id == $category->id)
+                        selected
+                    @endif
+                    >
+                        {{ $category->name }}
+                    </option>
                 @endforeach
             </select>
         </div>

@@ -6,6 +6,7 @@ use App\Services\BookService;
 use App\Services\AuthorService;
 use App\Services\CategoryService;
 use App\Http\Requests\StoreBookRequest;
+use App\Http\Requests\UpdateBookRequest;
 
 class BookController extends Controller
 {
@@ -32,12 +33,13 @@ class BookController extends Controller
 
     public function add()
     {
-        $title = 'Add New Book';
-        $destination_route = 'books.store';
-        $author_list = $this->authorService->getAllAuthors();
-        $category_list = $this->categoryService->getAllCategories();
-
-        return view('books.book-form', compact('title', 'author_list', 'category_list', 'destination_route'));
+        return view('books.book-form', [
+            'action' => route('books.store'),
+            'method' => 'POST',
+            'title' => 'Add New Book',
+            'author_list' => $this->authorService->getAllAuthors(),
+            'category_list' => $this->categoryService->getAllCategories(),
+        ]);
     }
 
     public function store(StoreBookRequest $request)
@@ -50,11 +52,26 @@ class BookController extends Controller
 
     public function edit($id)
     {
-        $title = 'Edit Book';
-        $author_list = $this->authorService->getAllAuthors();
-        $category_list = $this->categoryService->getAllCategories();
+        return view('books.book-form', [
+            'title' => 'Edit Book',
+            'method' => 'PUT',
+            'action' => route('books.update', $id),
+            'author_list' => $this->authorService->getAllAuthors(),
+            'category_list' => $this->categoryService->getAllCategories(),
+            'book' => $this->bookService->findBookById($id),
+        ]);
+    }
 
-        return view('books.book-form', compact('title'));
+    public function update(UpdateBookRequest $request, int $id)
+    {
+        $data = $request->validated();
+        if(isset($data['cover_url'])){
+            $this->bookService->updateBook($id, $data);
+        } else {
+            $this->bookService->updateBookWithoutCoverImg($id, $data);
+        }
+
+        return redirect()->route('books.index')->with('success', 'Book edited successfully!');
     }
 
     public function destroy($id)
