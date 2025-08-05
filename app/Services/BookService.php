@@ -22,4 +22,14 @@ class BookService
     {
         return $this->bookRepo->delete($id);
     }
+
+    public function storeBook(array $data)
+    {
+        $file = $data['cover_url'];
+        $fileName = 'book' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
+        $path = $file->storeAs('cover_img', $fileName, 'public');
+        $data['cover_url'] = $path;
+
+        return $this->bookRepo->create($data);
+    }
 }
