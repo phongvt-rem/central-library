@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\Interface\BookRepositoryInterface;
+use Illuminate\Support\Facades\Storage;
 
 class BookService
 {
@@ -20,6 +21,9 @@ class BookService
 
     public function deleteBook($id)
     {
+        $target_book = $this->bookRepo->find($id);
+        Storage::disk('public')->delete($target_book->cover_url);
+
         return $this->bookRepo->delete($id);
     }
 
