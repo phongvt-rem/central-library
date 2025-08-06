@@ -18,7 +18,7 @@ class BookService
     public function getAllBooks()
     {
         try {
-            return $this->bookRepo->all();
+            return $this->bookRepo->paginate(12);
         } catch (\Exception $e) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,

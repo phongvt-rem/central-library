@@ -12,4 +12,9 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
     {
         parent::__construct($model);
     }
+
+    public function paginate(int $size)
+    {
+        return $this->model->paginate($size);
+    }
 }
