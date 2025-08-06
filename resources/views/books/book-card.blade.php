@@ -1,4 +1,4 @@
-<div class="card" style="width: 18rem;">
+<div class="card" style="width: 15rem; height: 31rem">
   <img src={{  asset('storage/' . $book->cover_url) }} class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title text-center">{{ $book->title }}</h5>

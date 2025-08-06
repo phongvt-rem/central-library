@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\Interface\CategoryRepositoryInterface;
+use Illuminate\Support\Facades\Log;
 
 class CategoryService
 {
@@ -15,6 +16,15 @@ class CategoryService
 
     public function getAllCategories()
     {
-        return $this->categoryRepo->all();
+        try {  
+            return $this->categoryRepo->all();
+        } catch (\Exception $e) {
+            Log::error('ERROR: ', [
+                'method' => __METHOD__,
+                'line' => __LINE__,
+                'message' => $e->getMessage(),
+            ]);
+            throw $e;
+        }
     }
 }

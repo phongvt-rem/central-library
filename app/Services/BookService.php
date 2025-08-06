@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\Interface\BookRepositoryInterface;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class BookService
 {
@@ -16,47 +17,101 @@ class BookService
 
     public function getAllBooks()
     {
-        return $this->bookRepo->all();
+        try {
+            return $this->bookRepo->all();
+        } catch (\Exception $e) {
+            Log::error('ERROR: ', [
+                'method' => __METHOD__,
+                'line' => __LINE__,
+                'message' => $e->getMessage(),
+            ]);
+            throw $e;
+        }
     }
 
     public function deleteBook($id)
     {
-        $target_book = $this->bookRepo->find($id);
-        Storage::disk('public')->delete($target_book->cover_url);
-
-        return $this->bookRepo->delete($id);
+        try {
+            $target_book = $this->bookRepo->find($id);
+            Storage::disk('public')->delete($target_book->cover_url);
+    
+            return $this->bookRepo->delete($id);
+        } catch (\Exception $e) {
+            Log::error('ERROR: ', [
+                'method' => __METHOD__,
+                'line' => __LINE__,
+                'message' => $e->getMessage(),
+            ]);
+            throw $e;
+        }
     }
 
     public function storeBook(array $data)
     {
-        $file = $data['cover_url'];
-        $fileName = 'book' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
-        $path = $file->storeAs('cover_img', $fileName, 'public');
-        $data['cover_url'] = $path;
-
-        return $this->bookRepo->create($data);
+        try {
+            $file = $data['cover_url'];
+            $fileName = 'book' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('cover_img', $fileName, 'public');
+            $data['cover_url'] = $path;
+    
+            return $this->bookRepo->create($data);
+        } catch (\Exception $e) {
+            Log::error('ERROR: ', [
+                'method' => __METHOD__,
+                'line' => __LINE__,
+                'message' => $e->getMessage(),
+            ]);
+            throw $e;
+        }
     }
 
     public function findBookById($id)
     {
-        return $this->bookRepo->find($id);
+        try {
+            return $this->bookRepo->find($id);
+        } catch (\Exception $e) {
+            Log::error('ERROR: ', [
+                'method' => __METHOD__,
+                'line' => __LINE__,
+                'message' => $e->getMessage(),
+            ]);
+            throw $e;
+        }
     }
 
     public function updateBook(int $id, array $data)
     {
-        $target_book = $this->bookRepo->find($id);
-        Storage::disk('public')->delete($target_book->cover_url);
-
-        $file = $data['cover_url'];
-        $fileName = 'book' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
-        $path = $file->storeAs('cover_img', $fileName, 'public');
-        $data['cover_url'] = $path;
-
-        return $this->bookRepo->update($id, $data);
+        try {
+            $target_book = $this->bookRepo->find($id);
+            Storage::disk('public')->delete($target_book->cover_url);
+    
+            $file = $data['cover_url'];
+            $fileName = 'book' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('cover_img', $fileName, 'public');
+            $data['cover_url'] = $path;
+    
+            return $this->bookRepo->update($id, $data);
+        } catch (\Exception $e) {
+            Log::error('ERROR: ', [
+                'method' => __METHOD__,
+                'line' => __LINE__,
+                'message' => $e->getMessage(),
+            ]);
+            throw $e;
+        }
     }
 
     public function updateBookWithoutCoverImg(int $id, array $data)
     {
-        return $this->bookRepo->update($id, $data);
+        try {
+            return $this->bookRepo->update($id, $data);
+        } catch (\Exception $e) {
+            Log::error('ERROR: ', [
+                'method' => __METHOD__,
+                'line' => __LINE__,
+                'message' => $e->getMessage(),
+            ]);
+            throw $e;
+        }
     }
 }

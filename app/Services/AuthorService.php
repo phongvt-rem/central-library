@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\Interface\AuthorRepositoryInterface;
+use Illuminate\Support\Facades\Log;
 
 class AuthorService
 {
@@ -15,6 +16,15 @@ class AuthorService
 
     public function getAllAuthors()
     {
-        return $this->authorRepo->all();
+        try {
+            return $this->authorRepo->all();
+        } catch (\Exception $e) {
+            Log::error('ERROR: ', [
+                'method' => __METHOD__,
+                'line' => __LINE__,
+                'message' => $e->getMessage(),
+            ]);
+            throw $e;
+        }
     }
 }

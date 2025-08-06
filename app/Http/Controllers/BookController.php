@@ -7,6 +7,7 @@ use App\Services\AuthorService;
 use App\Services\CategoryService;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
+use Illuminate\Support\Facades\Log;
 
 class BookController extends Controller
 {
@@ -26,57 +27,94 @@ class BookController extends Controller
 
     public function index()
     {
-        $books = $this->bookService->getAllBooks();
+        try {
+            $books = $this->bookService->getAllBooks();
+    
+            return view('books.index', compact('books'));
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
 
-        return view('books.index', compact('books'));
+            return redirect('/')->withErrors('Cannot get the book list right now. Please try again later.');
+        }
     }
 
     public function add()
     {
-        return view('books.book-form', [
-            'action' => route('books.store'),
-            'method' => 'POST',
-            'title' => 'Add New Book',
-            'author_list' => $this->authorService->getAllAuthors(),
-            'category_list' => $this->categoryService->getAllCategories(),
-        ]);
+        try {
+            return view('books.book-form', [
+                'action' => route('books.store'),
+                'method' => 'POST',
+                'title' => 'Add New Book',
+                'author_list' => $this->authorService->getAllAuthors(),
+                'category_list' => $this->categoryService->getAllCategories(),
+            ]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+
+            return redirect()->route('books.index')->with('error', 'Cannot add new book right now. Please try again later.');
+        }
     }
 
     public function store(StoreBookRequest $request)
     {
-        $data = $request->validated();
-        $this->bookService->storeBook($data);
+        try {
+            $data = $request->validated();
+            $this->bookService->storeBook($data);
+    
+            return redirect()->route('books.index')->with('success', 'Book created successfully!');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
 
-        return redirect()->route('books.index')->with('success', 'Book created successfully!');
+            return redirect()->route('books.index')->with('error', 'Failed to create the book. Please try again.');
+        }
     }
 
     public function edit($id)
     {
-        return view('books.book-form', [
-            'title' => 'Edit Book',
-            'method' => 'PUT',
-            'action' => route('books.update', $id),
-            'author_list' => $this->authorService->getAllAuthors(),
-            'category_list' => $this->categoryService->getAllCategories(),
-            'book' => $this->bookService->findBookById($id),
-        ]);
+        try {
+            return view('books.book-form', [
+                'title' => 'Edit Book',
+                'method' => 'PUT',
+                'action' => route('books.update', $id),
+                'author_list' => $this->authorService->getAllAuthors(),
+                'category_list' => $this->categoryService->getAllCategories(),
+                'book' => $this->bookService->findBookById($id),
+            ]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+
+            return redirect()->route('books.index')->with('error', 'Cannot edit book right now. Please try again later.');
+        }
     }
 
     public function update(UpdateBookRequest $request, int $id)
     {
-        $data = $request->validated();
-        if(isset($data['cover_url'])){
-            $this->bookService->updateBook($id, $data);
-        } else {
-            $this->bookService->updateBookWithoutCoverImg($id, $data);
-        }
+        try {
+            $data = $request->validated();
+            if(isset($data['cover_url'])){
+                $this->bookService->updateBook($id, $data);
+            } else {
+                $this->bookService->updateBookWithoutCoverImg($id, $data);
+            }
+    
+            return redirect()->route('books.index')->with('success', 'Book edited successfully!');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
 
-        return redirect()->route('books.index')->with('success', 'Book edited successfully!');
+            return redirect()->route('books.index')->with('error', 'Failed to edit the book. Please try again.');
+        }
     }
 
     public function destroy($id)
     {
-        $this->bookService->deleteBook($id);
-        return redirect()->route('books.index')->with('success', 'Book deleted successfully!');
+        try {
+            $this->bookService->deleteBook($id);
+
+            return redirect()->route('books.index')->with('success', 'Book deleted successfully!');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+
+            return redirect()->route('books.index')->with('error', 'Failed to delete the book. Please try again.');
+        }
     }
 }
