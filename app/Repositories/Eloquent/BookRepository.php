@@ -13,8 +13,13 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
         parent::__construct($model);
     }
 
-    public function paginate(int $size)
+    public function paginateWithSearch(int $size, ?string $textSearch = null)
     {
-        return $this->model->paginate($size);
+        $query = $this->model->query();
+        if ($textSearch){
+            $query->where('title', 'like', '%' . $textSearch . '%');
+        }
+
+        return $query->paginate($size)->withQueryString();
     }
 }
