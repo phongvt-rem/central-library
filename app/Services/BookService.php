@@ -15,10 +15,12 @@ class BookService
         $this->bookRepo = $bookRepo;
     }
 
-    public function getAllBooks()
+    public function getAllBooks($request)
     {
         try {
-            return $this->bookRepo->paginate(12);
+            $textSearch = $request->input('search-param');
+
+            return $this->bookRepo->paginateWithSearch(12, $textSearch);
         } catch (\Exception $e) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,

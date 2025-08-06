@@ -14,5 +14,5 @@ interface BookRepositoryInterface
 
     public function delete($id);
 
-    public function paginate(int $size);
+    public function paginateWithSearch(int $size, ?string $textSearch = null);
 }

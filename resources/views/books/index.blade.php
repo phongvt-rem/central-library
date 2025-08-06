@@ -13,8 +13,19 @@
             </div>
         @endif
     @endforeach
-    <div class='mb-2'>
+    <div class='d-flex justify-content-between'>
         <a href="{{ route('books.add') }}" class="btn btn-primary">Add new book</a>
+        <form method="GET" action="{{ route('books.index') }}" class="input-group w-50">
+            <input 
+                name="search-param"
+                type="text"
+                class="form-control"
+                placeholder="Search book by name"
+                aria-label="search"
+                aria-describedby="search-btn"
+                value={{ request('search-param') }}>
+            <button class="btn btn-outline-primary" type="submit" id="search-btn">Search</button>
+        </form>
     </div>
     <div class="row">
         @if (count($books) > 0)
@@ -39,7 +50,7 @@
                 </ul>
             </nav>
         @else
-            <p class="text-center">No books found!</p>
+            <p class="text-center mt-2">No books found!</p>
         @endif
     </div>
 </div>

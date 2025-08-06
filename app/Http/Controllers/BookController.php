@@ -8,6 +8,7 @@ use App\Services\CategoryService;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
@@ -25,10 +26,10 @@ class BookController extends Controller
         $this->categoryService = $categoryService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $books = $this->bookService->getAllBooks();
+            $books = $this->bookService->getAllBooks($request);
     
             return view('books.index', compact('books'));
         } catch (\Exception $e) {
