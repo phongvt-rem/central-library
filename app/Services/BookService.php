@@ -18,9 +18,7 @@ class BookService
     public function getAllBooks($request)
     {
         try {
-            $textSearch = $request->input('search-param');
-
-            return $this->bookRepo->paginateWithSearch(12, $textSearch);
+            return $this->bookRepo->paginateWithSearch(8, $request->only(['book_title', 'category_id', 'author_id']));
         } catch (\Exception $e) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,

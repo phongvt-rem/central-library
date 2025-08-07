@@ -13,20 +13,56 @@
             </div>
         @endif
     @endforeach
-    <div class='d-flex justify-content-between'>
-        <a href="{{ route('books.add') }}" class="btn btn-primary">Add new book</a>
-        <form method="GET" action="{{ route('books.index') }}" class="input-group w-50">
-            <input 
-                name="search-param"
-                type="text"
-                class="form-control"
-                placeholder="Search book by name"
-                aria-label="search"
-                aria-describedby="search-btn"
-                value={{ request('search-param') }}>
-            <button class="btn btn-outline-primary" type="submit" id="search-btn">Search</button>
-        </form>
+    <a href="{{ route('books.add') }}" class="btn btn-primary">Add new book</a>
+
+    <div class="accordion mt-3" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Filter & Search
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <form class="accordion-body" method="GET" action="{{ route('books.index') }}">
+                    <div class="row mb-2">
+                        <div class="col-6">
+                            <label for="book_title" class="form-label">Book title</label>
+                            <input name="book_title" id="book_title" class="form-control" type="text" placeholder="Search by title" aria-label="default input example">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="author_id" class="form-label">Author</label>
+                            <select id="author_id" name="author_id" class="form-select" aria-label="Default select example">
+                                <option selected value=0>Select author</option>
+                                @foreach ($author_list as $author)   
+                                    <option value={{ $author->id }}>
+                                        {{ $author->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label for="category_id" class="form-label">Category</label>
+                            <select name="category_id" id="category_id" class="form-select" aria-label="Default select example">
+                                <option selected value=0>Select category</option>
+                                @foreach ($category_list as $category)
+                                    <option value={{ $category->id }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center mt-3">
+                        <button class="btn btn-outline-primary" type="submit" id="filter-btn">Apply</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
+
+
     <div class="row">
         @if (count($books) > 0)
             @foreach($books as $book)
@@ -34,7 +70,7 @@
                     @include('books.book-card', ['book' => $book])
                 </div>
             @endforeach
-            <nav aria-label="pagination" class="mt-4">
+            <nav aria-label="pagination">
                 <ul class="pagination mb-0 d-flex justify-content-center">
                     <li class="page-item {{ $books->onFirstPage() ? 'disabled' : '' }}">
                         <a class="page-link" href="{{ $books->previousPageUrl() }}">Previous</a>
