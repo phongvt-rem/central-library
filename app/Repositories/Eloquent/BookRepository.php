@@ -15,7 +15,7 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
 
     public function paginateWithSearch(int $size, ?string $textSearch = null)
     {
-        $query = $this->model->query();
+        $query = $this->model->with(['author', 'category']);
         if ($textSearch){
             $query->where('title', 'like', '%' . $textSearch . '%');
         }
