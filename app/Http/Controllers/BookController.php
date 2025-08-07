@@ -31,7 +31,11 @@ class BookController extends Controller
         try {
             $books = $this->bookService->getAllBooks($request);
     
-            return view('books.index', compact('books'));
+            return view('books.index', [
+                'books' => $books,
+                'author_list' => $this->authorService->getAllAuthors(),
+                'category_list' => $this->categoryService->getAllCategories(),
+            ]);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
 
