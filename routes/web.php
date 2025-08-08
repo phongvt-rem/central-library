@@ -8,11 +8,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Sign in
 Route::get('/login', function () {
-    return view('login');
+    return view('auth/login');
 });
 Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+//Sign out
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Register
+Route::get('/register', function () {
+    return view('auth/register');
+});
+Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 Route::middleware('auth')->prefix('books')->group(function () {
     // VIEW

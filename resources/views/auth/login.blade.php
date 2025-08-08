@@ -13,16 +13,21 @@
       <form style="width: 22rem;" method="POST" action="{{ route('login') }}">
         @csrf
         <h3 class="text-center mb-4">Login</h5>
-        @if ($errors->any())
-          <div style="color:red;">
-              {{ $errors->first() }}
-          </div>
-        @endif
-        <div class="form-outline mb-4">
+        @foreach (['success' => 'success', 'error' => 'danger'] as $msg => $type)
+          @if (session($msg))
+              <div class="alert alert-{{ $type }} alert-dismissible fade show" role="alert">
+                  {{ session($msg) }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+          @endif
+        @endforeach
+        <div class="form-floating mb-4">
           <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+          <label for="email">Email address</label>
         </div>
-        <div class="form-outline mb-4">
+        <div class="form-floating mb-4">
           <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password" required>
+          <label for="password">Password</label>
         </div>
 
         <div class="row mb-4 d-flex justify-content-center">
@@ -38,6 +43,12 @@
         </div>
 
         <button type="submit" class="btn btn-primary d-block mx-auto">Sign in</button>
+        <p class="mb-0 mt-3 text-black text-opacity-50">
+          Don't have an account?
+          <span>
+            <a class="text-primary text-opacity-75" href="{{ route('register') }}">Create an account now</a>
+          </span>
+        </p>
       </form>
     </section>
 
