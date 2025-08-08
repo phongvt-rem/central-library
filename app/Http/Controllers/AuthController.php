@@ -52,6 +52,5 @@ class AuthController extends Controller
 
             return redirect('/login')->with('error', 'Failed to register new user. Please try again.');
         }
-
     }
 }
