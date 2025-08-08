@@ -2,12 +2,19 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('books')->group(function () {
+Route::get('/login', function () {
+    return view('login');
+});
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::middleware('auth')->prefix('books')->group(function () {
     // VIEW
     Route::get('/', [BookController::class, 'index'])->name('books.index');
 

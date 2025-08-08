@@ -25,8 +25,19 @@
           <a class="nav-link disabled" href="#">Contact</a>
         </li>
       </ul>
+      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+          @csrf
+      </form>
 
-      <button class="btn btn-outline-primary" type="submit" disabled>Account</button>
+      <div class="dropdown">
+        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Account
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#" style="pointer-events:none; color:gray;">Profile</a></li>
+          <li><a class="dropdown-item" onclick="document.getElementById('logout-form').submit();">Sign out</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 </nav>
