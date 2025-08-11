@@ -44,12 +44,12 @@ class BookController extends Controller
     public function index(Request $indexBookRequest): View|RedirectResponse
     {
         try {
-            $books = $this->bookService->getAllBooks($indexBookRequest);
+            $books = $this->bookService->getAll($indexBookRequest);
 
             return view('books.index', [
                 'books' => $books,
-                'author_list' => $this->authorService->getAllAuthors(),
-                'category_list' => $this->categoryService->getAllCategories(),
+                'author_list' => $this->authorService->getAll(),
+                'category_list' => $this->categoryService->getAll(),
             ]);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
@@ -70,8 +70,8 @@ class BookController extends Controller
                 'action' => route('books.store'),
                 'method' => 'POST',
                 'title' => 'Add New Book',
-                'author_list' => $this->authorService->getAllAuthors(),
-                'category_list' => $this->categoryService->getAllCategories(),
+                'author_list' => $this->authorService->getAll(),
+                'category_list' => $this->categoryService->getAll(),
             ]);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
@@ -90,7 +90,7 @@ class BookController extends Controller
     {
         try {
             $bookData = $storeBookrequest->validated();
-            $this->bookService->storeBook($bookData);
+            $this->bookService->store($bookData);
 
             return redirect()->route('books.index')->with('success', 'Book created successfully!');
         } catch (\Exception $exception) {
@@ -113,9 +113,9 @@ class BookController extends Controller
                 'title' => 'Edit Book',
                 'method' => 'PUT',
                 'action' => route('books.update', $bookId),
-                'author_list' => $this->authorService->getAllAuthors(),
-                'category_list' => $this->categoryService->getAllCategories(),
-                'book' => $this->bookService->findBookById($bookId),
+                'author_list' => $this->authorService->getAll(),
+                'category_list' => $this->categoryService->getAll(),
+                'book' => $this->bookService->findById($bookId),
             ]);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
@@ -137,9 +137,9 @@ class BookController extends Controller
             $bookData = $updateBookRequest->validated();
 
             if (isset($bookData['cover_url'])) {
-                $this->bookService->updateBook($bookId, $bookData);
+                $this->bookService->update($bookId, $bookData);
             } else {
-                $this->bookService->updateBookWithoutCoverImg($bookId, $bookData);
+                $this->bookService->updateWithoutCoverImg($bookId, $bookData);
             }
 
             return redirect()->route('books.index')->with('success', 'Book edited successfully!');
@@ -159,7 +159,7 @@ class BookController extends Controller
     public function destroy(int $bookId): RedirectResponse
     {
         try {
-            $this->bookService->deleteBook($bookId);
+            $this->bookService->delete($bookId);
 
             return redirect()->route('books.index')->with('success', 'Book deleted successfully!');
         } catch (\Exception $exception) {

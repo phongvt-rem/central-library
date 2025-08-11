@@ -27,7 +27,7 @@ class UserService
      * @return Model
      * @throws \Exception
      */
-    public function createUser(array $userData): Model
+    public function create(array $userData): Model
     {
         try {
             return $this->userRepository->create($userData);

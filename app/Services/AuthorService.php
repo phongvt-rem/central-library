@@ -26,7 +26,7 @@ class AuthorService
      * @return Collection
      * @throws \Exception
      */
-    public function getAllAuthors(): Collection
+    public function getAll(): Collection
     {
         try {
             return $this->authorRepository->all();

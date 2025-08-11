@@ -69,7 +69,7 @@ class AuthController extends Controller
     {
         try {
             $userInfo = $registerRequest->validated();
-            $this->userService->createUser($userInfo);
+            $this->userService->create($userInfo);
 
             return redirect('/login')->with('success', 'User registered successfully. Please log in again!');
         } catch (\Exception $exception) {

@@ -26,7 +26,7 @@ class CategoryService
      * @return Collection
      * @throws \Exception
      */
-    public function getAllCategories(): Collection
+    public function getAll(): Collection
     {
         try {
             return $this->categoryRepository->all();

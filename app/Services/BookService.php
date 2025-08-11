@@ -30,7 +30,7 @@ class BookService
      * @return LengthAwarePaginator
      * @throws \Exception
      */
-    public function getAllBooks(Request $indexBookRequest): LengthAwarePaginator
+    public function getAll(Request $indexBookRequest): LengthAwarePaginator
     {
         try {
             return $this->bookRepository->paginateWithSearch(8, $indexBookRequest->only(['book_title', 'category_id', 'author_id']));
@@ -52,7 +52,7 @@ class BookService
      * @return int
      * @throws \Exception
      */
-    public function deleteBook(int $bookId): int
+    public function delete(int $bookId): int
     {
         try {
             $target_book = $this->bookRepository->find($bookId);
@@ -77,7 +77,7 @@ class BookService
      * @return Model
      * @throws \Exception
      */
-    public function storeBook(array $bookData): Model
+    public function store(array $bookData): Model
     {
         try {
             $coverImg = $bookData['cover_url'];
@@ -104,7 +104,7 @@ class BookService
      * @return Model
      * @throws \Exception
      */
-    public function findBookById(int $bookId): Model
+    public function findById(int $bookId): Model
     {
         try {
             return $this->bookRepository->find($bookId);
@@ -127,7 +127,7 @@ class BookService
      * @return Model
      * @throws \Exception
      */
-    public function updateBook(int $bookId, array $bookData): Model
+    public function update(int $bookId, array $bookData): Model
     {
         try {
             $target_book = $this->bookRepository->find($bookId);
@@ -158,7 +158,7 @@ class BookService
      * @return Model
      * @throws \Exception
      */
-    public function updateBookWithoutCoverImg(int $bookId, array $bookData): Model
+    public function updateWithoutCoverImg(int $bookId, array $bookData): Model
     {
         try {
             return $this->bookRepository->update($bookId, $bookData);
