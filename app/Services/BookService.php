@@ -37,6 +37,7 @@ class BookService
                 'line' => __LINE__,
                 'message' => $e->getMessage(),
             ]);
+
             throw $e;
         }
     }
@@ -53,7 +54,7 @@ class BookService
         try {
             $target_book = $this->bookRepo->find($id);
             Storage::disk('public')->delete($target_book->cover_url);
-    
+
             return $this->bookRepo->delete($id);
         } catch (\Exception $e) {
             Log::error('ERROR: ', [
@@ -61,6 +62,7 @@ class BookService
                 'line' => __LINE__,
                 'message' => $e->getMessage(),
             ]);
+
             throw $e;
         }
     }
@@ -79,7 +81,7 @@ class BookService
             $fileName = 'book' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('cover_img', $fileName, 'public');
             $data['cover_url'] = $path;
-    
+
             return $this->bookRepo->create($data);
         } catch (\Exception $e) {
             Log::error('ERROR: ', [
@@ -87,6 +89,7 @@ class BookService
                 'line' => __LINE__,
                 'message' => $e->getMessage(),
             ]);
+
             throw $e;
         }
     }
@@ -108,6 +111,7 @@ class BookService
                 'line' => __LINE__,
                 'message' => $e->getMessage(),
             ]);
+
             throw $e;
         }
     }
@@ -125,12 +129,12 @@ class BookService
         try {
             $target_book = $this->bookRepo->find($id);
             Storage::disk('public')->delete($target_book->cover_url);
-    
+
             $file = $data['cover_url'];
             $fileName = 'book' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('cover_img', $fileName, 'public');
             $data['cover_url'] = $path;
-    
+
             return $this->bookRepo->update($id, $data);
         } catch (\Exception $e) {
             Log::error('ERROR: ', [
@@ -138,6 +142,7 @@ class BookService
                 'line' => __LINE__,
                 'message' => $e->getMessage(),
             ]);
+
             throw $e;
         }
     }
@@ -160,6 +165,7 @@ class BookService
                 'line' => __LINE__,
                 'message' => $e->getMessage(),
             ]);
+
             throw $e;
         }
     }

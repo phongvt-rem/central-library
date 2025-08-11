@@ -32,9 +32,11 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
         if (!empty($filters['book_title'])) {
             $query->where('title', 'like', '%' . $filters['book_title'] . '%');
         }
+
         if (!empty($filters['author_id']) && (int)$filters['author_id'] > 0) {
             $query->where('author_id', (int)$filters['author_id']);
         }
+
         if (!empty($filters['category_id']) && (int)$filters['category_id'] > 0) {
             $query->where('category_id', (int)$filters['category_id']);
         }

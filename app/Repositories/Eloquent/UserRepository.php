@@ -59,6 +59,7 @@ class UserRepository implements UserRepositoryInterface
     {
         $model = $this->find($id);
         $model->update($data);
+
         return $model;
     }
 }

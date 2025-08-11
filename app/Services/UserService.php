@@ -36,6 +36,7 @@ class UserService
                 'line' => __LINE__,
                 'message' => $e->getMessage(),
             ]);
+
             throw $e;
         }
     }

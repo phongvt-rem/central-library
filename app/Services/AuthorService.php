@@ -35,6 +35,7 @@ class AuthorService
                 'line' => __LINE__,
                 'message' => $e->getMessage(),
             ]);
+
             throw $e;
         }
     }

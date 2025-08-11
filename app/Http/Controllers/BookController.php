@@ -43,7 +43,7 @@ class BookController extends Controller
     {
         try {
             $books = $this->bookService->getAllBooks($request);
-    
+
             return view('books.index', [
                 'books' => $books,
                 'author_list' => $this->authorService->getAllAuthors(),
@@ -89,7 +89,7 @@ class BookController extends Controller
         try {
             $data = $request->validated();
             $this->bookService->storeBook($data);
-    
+
             return redirect()->route('books.index')->with('success', 'Book created successfully!');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -138,7 +138,7 @@ class BookController extends Controller
             } else {
                 $this->bookService->updateBookWithoutCoverImg($id, $data);
             }
-    
+
             return redirect()->route('books.index')->with('success', 'Book edited successfully!');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
