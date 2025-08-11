@@ -9,11 +9,23 @@ class UserService
 {
     protected UserRepositoryInterface $userRepo;
 
+    /**
+     * Constructor.
+     *
+     * @param UserRepositoryInterface $userRepo
+     */
     public function __construct(UserRepositoryInterface $userRepo)
     {
         $this->userRepo = $userRepo;
     }
 
+    /**
+     * Create a new user.
+     *
+     * @param array $data
+     * @return mixed
+     * @throws \Exception
+     */
     public function createUser(array $data)
     {
         try {

@@ -9,14 +9,25 @@ class CategoryService
 {
     protected CategoryRepositoryInterface $categoryRepo;
 
+    /**
+     * Constructor.
+     *
+     * @param CategoryRepositoryInterface $categoryRepo
+     */
     public function __construct(CategoryRepositoryInterface $categoryRepo)
     {
         $this->categoryRepo = $categoryRepo;
     }
 
+    /**
+     * Get all categories.
+     *
+     * @return mixed
+     * @throws \Exception
+     */
     public function getAllCategories()
     {
-        try {  
+        try {
             return $this->categoryRepo->all();
         } catch (\Exception $e) {
             Log::error('ERROR: ', [

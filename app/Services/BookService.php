@@ -10,11 +10,23 @@ class BookService
 {
     protected BookRepositoryInterface $bookRepo;
 
+    /**
+     * Constructor.
+     *
+     * @param BookRepositoryInterface $bookRepo
+     */
     public function __construct(BookRepositoryInterface $bookRepo)
     {
         $this->bookRepo = $bookRepo;
     }
 
+    /**
+     * Get all books with pagination and search filters.
+     *
+     * @param mixed $request
+     * @return mixed
+     * @throws \Exception
+     */
     public function getAllBooks($request)
     {
         try {
@@ -29,6 +41,13 @@ class BookService
         }
     }
 
+    /**
+     * Delete a book by ID.
+     *
+     * @param int $id
+     * @return mixed
+     * @throws \Exception
+     */
     public function deleteBook($id)
     {
         try {
@@ -46,6 +65,13 @@ class BookService
         }
     }
 
+    /**
+     * Store a new book.
+     *
+     * @param array $data
+     * @return mixed
+     * @throws \Exception
+     */
     public function storeBook(array $data)
     {
         try {
@@ -65,6 +91,13 @@ class BookService
         }
     }
 
+    /**
+     * Find a book by ID.
+     *
+     * @param int $id
+     * @return mixed
+     * @throws \Exception
+     */
     public function findBookById($id)
     {
         try {
@@ -79,6 +112,14 @@ class BookService
         }
     }
 
+    /**
+     * Update a book including its cover image.
+     *
+     * @param int $id
+     * @param array $data
+     * @return mixed
+     * @throws \Exception
+     */
     public function updateBook(int $id, array $data)
     {
         try {
@@ -101,6 +142,14 @@ class BookService
         }
     }
 
+    /**
+     * Update a book without changing its cover image.
+     *
+     * @param int $id
+     * @param array $data
+     * @return mixed
+     * @throws \Exception
+     */
     public function updateBookWithoutCoverImg(int $id, array $data)
     {
         try {

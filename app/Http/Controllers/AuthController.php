@@ -13,11 +13,22 @@ class AuthController extends Controller
 {
     protected UserService $userService;
 
+    /**
+     * Constructor.
+     *
+     * @param UserService $userService
+     */
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
     }
 
+    /**
+     * Log in the user.
+     *
+     * @param LoginRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function login(LoginRequest $request)
     {
         $credentials = $request->validated();
@@ -31,6 +42,12 @@ class AuthController extends Controller
         ])->withInput();
     }
 
+    /**
+     * Log out the user.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function logout(Request $request)
     {
         Auth::logout();
@@ -40,6 +57,12 @@ class AuthController extends Controller
         return redirect('/');
     }
 
+    /**
+     * Register a new user.
+     *
+     * @param RegisterRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function register(RegisterRequest $request)
     {
         try {
@@ -47,7 +70,7 @@ class AuthController extends Controller
             $this->userService->createUser($userInfo);
 
             return redirect('/login')->with('success', 'User registered successfully. Please log in again!');
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             Log::error($e->getMessage());
 
             return redirect('/login')->with('error', 'Failed to register new user. Please try again.');

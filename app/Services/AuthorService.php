@@ -9,11 +9,22 @@ class AuthorService
 {
     protected AuthorRepositoryInterface $authorRepo;
 
+    /**
+     * Constructor.
+     *
+     * @param AuthorRepositoryInterface $authorRepo
+     */
     public function __construct(AuthorRepositoryInterface $authorRepo)
     {
         $this->authorRepo = $authorRepo;
     }
 
+    /**
+     * Get all authors.
+     *
+     * @return mixed
+     * @throws \Exception
+     */
     public function getAllAuthors()
     {
         try {

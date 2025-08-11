@@ -13,5 +13,10 @@ class Author extends Model
      */
     protected $table = 'authors';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = ['name', 'birth_date'];
 }

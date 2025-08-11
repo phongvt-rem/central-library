@@ -16,6 +16,13 @@ class BookController extends Controller
     protected AuthorService $authorService;
     protected CategoryService $categoryService;
 
+    /**
+     * Constructor.
+     *
+     * @param BookService $bookService
+     * @param AuthorService $authorService
+     * @param CategoryService $categoryService
+     */
     public function __construct(
         BookService $bookService,
         AuthorService $authorService,
@@ -26,6 +33,12 @@ class BookController extends Controller
         $this->categoryService = $categoryService;
     }
 
+    /**
+     * Display a list of books.
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function index(Request $request)
     {
         try {
@@ -43,6 +56,11 @@ class BookController extends Controller
         }
     }
 
+    /**
+     * Show the form to add a new book.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function add()
     {
         try {
@@ -60,6 +78,12 @@ class BookController extends Controller
         }
     }
 
+    /**
+     * Store a newly created book.
+     *
+     * @param StoreBookRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(StoreBookRequest $request)
     {
         try {
@@ -74,6 +98,12 @@ class BookController extends Controller
         }
     }
 
+    /**
+     * Show the form to edit an existing book.
+     *
+     * @param int $id
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function edit($id)
     {
         try {
@@ -92,11 +122,18 @@ class BookController extends Controller
         }
     }
 
+    /**
+     * Update an existing book.
+     *
+     * @param UpdateBookRequest $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(UpdateBookRequest $request, int $id)
     {
         try {
             $data = $request->validated();
-            if(isset($data['cover_url'])){
+            if (isset($data['cover_url'])) {
                 $this->bookService->updateBook($id, $data);
             } else {
                 $this->bookService->updateBookWithoutCoverImg($id, $data);
@@ -110,6 +147,12 @@ class BookController extends Controller
         }
     }
 
+    /**
+     * Delete a book.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy($id)
     {
         try {
