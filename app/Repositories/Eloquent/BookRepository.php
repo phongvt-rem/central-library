@@ -5,6 +5,7 @@ namespace App\Repositories\Eloquent;
 use App\Repositories\Eloquent\BaseRepository;
 use App\Models\Book;
 use App\Repositories\Interface\BookRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class BookRepository extends BaseRepository implements BookRepositoryInterface
 {
@@ -23,9 +24,9 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
      *
      * @param int $size Number of items per page
      * @param array $filters Optional filters: book_title, author_id, category_id
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return LengthAwarePaginator
      */
-    public function paginateWithSearch(int $size, array $filters = [])
+    public function paginateWithSearch(int $size, array $filters = []): LengthAwarePaginator
     {
         $query = $this->model->with(['author', 'category']);
 

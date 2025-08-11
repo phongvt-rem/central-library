@@ -3,6 +3,7 @@
 namespace App\Repositories\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
 class BaseRepository
 {
@@ -21,9 +22,9 @@ class BaseRepository
     /**
      * Get all records.
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return Collection
      */
-    public function all()
+    public function all(): Collection
     {
         return $this->model->all();
     }
@@ -31,10 +32,11 @@ class BaseRepository
     /**
      * Find a record by ID.
      *
-     * @param mixed $id
+     * @param int $id
      * @return Model
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    public function find($id)
+    public function find(int $id): Model
     {
         return $this->model->findOrFail($id);
     }
@@ -45,7 +47,7 @@ class BaseRepository
      * @param array $data
      * @return Model
      */
-    public function create(array $data)
+    public function create(array $data): Model
     {
         return $this->model->create($data);
     }
@@ -53,24 +55,25 @@ class BaseRepository
     /**
      * Update a record by ID.
      *
-     * @param mixed $id
+     * @param int $id
      * @param array $data
      * @return Model
      */
-    public function update($id, array $data)
+    public function update(int $id, array $data): Model
     {
         $model = $this->find($id);
         $model->update($data);
+
         return $model;
     }
 
     /**
      * Delete a record by ID.
      *
-     * @param mixed $id
+     * @param int $id
      * @return int
      */
-    public function delete($id)
+    public function delete(int $id): int
     {
         return $this->model::destroy($id);
     }

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\Interface\AuthorRepositoryInterface;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Collection;
 
 class AuthorService
 {
@@ -22,10 +23,10 @@ class AuthorService
     /**
      * Get all authors.
      *
-     * @return mixed
+     * @return Collection
      * @throws \Exception
      */
-    public function getAllAuthors()
+    public function getAllAuthors(): Collection
     {
         try {
             return $this->authorRepo->all();

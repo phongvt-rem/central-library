@@ -5,6 +5,9 @@ namespace App\Services;
 use App\Repositories\Interface\BookRepositoryInterface;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Model;
 
 class BookService
 {
@@ -23,11 +26,11 @@ class BookService
     /**
      * Get all books with pagination and search filters.
      *
-     * @param mixed $request
-     * @return mixed
+     * @param Request $request
+     * @return LengthAwarePaginator
      * @throws \Exception
      */
-    public function getAllBooks($request)
+    public function getAllBooks(Request $request): LengthAwarePaginator
     {
         try {
             return $this->bookRepo->paginateWithSearch(8, $request->only(['book_title', 'category_id', 'author_id']));
@@ -46,10 +49,10 @@ class BookService
      * Delete a book by ID.
      *
      * @param int $id
-     * @return mixed
+     * @return int
      * @throws \Exception
      */
-    public function deleteBook($id)
+    public function deleteBook(int $id): int
     {
         try {
             $target_book = $this->bookRepo->find($id);
@@ -71,10 +74,10 @@ class BookService
      * Store a new book.
      *
      * @param array $data
-     * @return mixed
+     * @return Model
      * @throws \Exception
      */
-    public function storeBook(array $data)
+    public function storeBook(array $data): Model
     {
         try {
             $file = $data['cover_url'];
@@ -98,10 +101,10 @@ class BookService
      * Find a book by ID.
      *
      * @param int $id
-     * @return mixed
+     * @return Model
      * @throws \Exception
      */
-    public function findBookById($id)
+    public function findBookById(int $id): Model
     {
         try {
             return $this->bookRepo->find($id);
@@ -121,10 +124,10 @@ class BookService
      *
      * @param int $id
      * @param array $data
-     * @return mixed
+     * @return Model
      * @throws \Exception
      */
-    public function updateBook(int $id, array $data)
+    public function updateBook(int $id, array $data): Model
     {
         try {
             $target_book = $this->bookRepo->find($id);
@@ -152,10 +155,10 @@ class BookService
      *
      * @param int $id
      * @param array $data
-     * @return mixed
+     * @return Model
      * @throws \Exception
      */
-    public function updateBookWithoutCoverImg(int $id, array $data)
+    public function updateBookWithoutCoverImg(int $id, array $data): Model
     {
         try {
             return $this->bookRepo->update($id, $data);

@@ -4,10 +4,11 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Author;
 use App\Repositories\Interface\AuthorRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 
 class AuthorRepository implements AuthorRepositoryInterface
 {
-    protected $model;
+    protected Author $model;
 
     /**
      * Constructor.
@@ -22,9 +23,9 @@ class AuthorRepository implements AuthorRepositoryInterface
     /**
      * Get all authors.
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return Collection
      */
-    public function all()
+    public function all(): Collection
     {
         return $this->model->all();
     }

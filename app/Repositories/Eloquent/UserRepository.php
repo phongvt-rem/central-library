@@ -7,12 +7,7 @@ use App\Repositories\Interface\UserRepositoryInterface;
 
 class UserRepository implements UserRepositoryInterface
 {
-    /**
-     * The User model instance.
-     *
-     * @var User
-     */
-    protected $model;
+    protected User $model;
 
     /**
      * Constructor.
@@ -29,10 +24,9 @@ class UserRepository implements UserRepositoryInterface
      *
      * @param int $id
      * @return User
-     *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    public function find($id)
+    public function find($id): User
     {
         return $this->model->findOrFail($id);
     }
@@ -43,7 +37,7 @@ class UserRepository implements UserRepositoryInterface
      * @param array $data
      * @return User
      */
-    public function create(array $data)
+    public function create(array $data): User
     {
         return $this->model->create($data);
     }
@@ -55,7 +49,7 @@ class UserRepository implements UserRepositoryInterface
      * @param array $data
      * @return User
      */
-    public function update($id, array $data)
+    public function update($id, array $data): User
     {
         $model = $this->find($id);
         $model->update($data);

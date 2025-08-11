@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\Interface\UserRepositoryInterface;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Model;
 
 class UserService
 {
@@ -23,10 +24,10 @@ class UserService
      * Create a new user.
      *
      * @param array $data
-     * @return mixed
+     * @return Model
      * @throws \Exception
      */
-    public function createUser(array $data)
+    public function createUser(array $data): Model
     {
         try {
             return $this->userRepo->create($data);

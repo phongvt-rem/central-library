@@ -9,6 +9,8 @@ use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class BookController extends Controller
 {
@@ -37,9 +39,9 @@ class BookController extends Controller
      * Display a list of books.
      *
      * @param Request $request
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     * @return View|RedirectResponse
      */
-    public function index(Request $request)
+    public function index(Request $request): View|RedirectResponse
     {
         try {
             $books = $this->bookService->getAllBooks($request);
@@ -59,9 +61,9 @@ class BookController extends Controller
     /**
      * Show the form to add a new book.
      *
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     * @return View|RedirectResponse
      */
-    public function add()
+    public function add(): View|RedirectResponse
     {
         try {
             return view('books.book-form', [
@@ -82,9 +84,9 @@ class BookController extends Controller
      * Store a newly created book.
      *
      * @param StoreBookRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function store(StoreBookRequest $request)
+    public function store(StoreBookRequest $request): RedirectResponse
     {
         try {
             $data = $request->validated();
@@ -102,9 +104,9 @@ class BookController extends Controller
      * Show the form to edit an existing book.
      *
      * @param int $id
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     * @return View|RedirectResponse
      */
-    public function edit($id)
+    public function edit(int $id): View|RedirectResponse
     {
         try {
             return view('books.book-form', [
@@ -127,12 +129,13 @@ class BookController extends Controller
      *
      * @param UpdateBookRequest $request
      * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function update(UpdateBookRequest $request, int $id)
+    public function update(UpdateBookRequest $request, int $id): RedirectResponse
     {
         try {
             $data = $request->validated();
+
             if (isset($data['cover_url'])) {
                 $this->bookService->updateBook($id, $data);
             } else {
@@ -151,9 +154,9 @@ class BookController extends Controller
      * Delete a book.
      *
      * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(int $id): RedirectResponse
     {
         try {
             $this->bookService->deleteBook($id);

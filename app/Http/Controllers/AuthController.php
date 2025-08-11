@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\RedirectResponse;
 
 class AuthController extends Controller
 {
@@ -27,9 +28,9 @@ class AuthController extends Controller
      * Log in the user.
      *
      * @param LoginRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request): RedirectResponse
     {
         $credentials = $request->validated();
         if (Auth::attempt($credentials)) {
@@ -47,9 +48,9 @@ class AuthController extends Controller
      * Log out the user.
      *
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function logout(Request $request)
+    public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
         $request->session()->invalidate();
@@ -62,9 +63,9 @@ class AuthController extends Controller
      * Register a new user.
      *
      * @param RegisterRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function register(RegisterRequest $request)
+    public function register(RegisterRequest $request): RedirectResponse
     {
         try {
             $userInfo = $request->validated();

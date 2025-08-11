@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\Interface\CategoryRepositoryInterface;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Collection;
 
 class CategoryService
 {
@@ -22,10 +23,10 @@ class CategoryService
     /**
      * Get all categories.
      *
-     * @return mixed
+     * @return Collection
      * @throws \Exception
      */
-    public function getAllCategories()
+    public function getAllCategories(): Collection
     {
         try {
             return $this->categoryRepo->all();
