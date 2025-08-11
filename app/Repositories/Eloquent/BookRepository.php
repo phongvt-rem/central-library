@@ -22,26 +22,26 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
     /**
      * Get paginated list of books with optional search and filters.
      *
-     * @param int $size Number of items per page
-     * @param array $filters Optional filters: book_title, author_id, category_id
+     * @param int $pageSize Number of items per page
+     * @param array $filterConditions Optional filters: book_title, author_id, category_id
      * @return LengthAwarePaginator
      */
-    public function paginateWithSearch(int $size, array $filters = []): LengthAwarePaginator
+    public function paginateWithSearch(int $pageSize, array $filterConditions = []): LengthAwarePaginator
     {
         $query = $this->model->with(['author', 'category']);
 
-        if (!empty($filters['book_title'])) {
-            $query->where('title', 'like', '%' . $filters['book_title'] . '%');
+        if (!empty($filterConditions['book_title'])) {
+            $query->where('title', 'like', '%' . $filterConditions['book_title'] . '%');
         }
 
-        if (!empty($filters['author_id']) && (int)$filters['author_id'] > 0) {
-            $query->where('author_id', (int)$filters['author_id']);
+        if (!empty($filterConditions['author_id']) && (int)$filterConditions['author_id'] > 0) {
+            $query->where('author_id', (int)$filterConditions['author_id']);
         }
 
-        if (!empty($filters['category_id']) && (int)$filters['category_id'] > 0) {
-            $query->where('category_id', (int)$filters['category_id']);
+        if (!empty($filterConditions['category_id']) && (int)$filterConditions['category_id'] > 0) {
+            $query->where('category_id', (int)$filterConditions['category_id']);
         }
 
-        return $query->paginate($size)->withQueryString();
+        return $query->paginate($pageSize)->withQueryString();
     }
 }

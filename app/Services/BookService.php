@@ -11,165 +11,165 @@ use Illuminate\Database\Eloquent\Model;
 
 class BookService
 {
-    protected BookRepositoryInterface $bookRepo;
+    protected BookRepositoryInterface $bookRepository;
 
     /**
      * Constructor.
      *
-     * @param BookRepositoryInterface $bookRepo
+     * @param BookRepositoryInterface $bookRepository
      */
-    public function __construct(BookRepositoryInterface $bookRepo)
+    public function __construct(BookRepositoryInterface $bookRepository)
     {
-        $this->bookRepo = $bookRepo;
+        $this->bookRepository = $bookRepository;
     }
 
     /**
      * Get all books with pagination and search filters.
      *
-     * @param Request $request
+     * @param Request $indexBookRequest
      * @return LengthAwarePaginator
      * @throws \Exception
      */
-    public function getAllBooks(Request $request): LengthAwarePaginator
+    public function getAllBooks(Request $indexBookRequest): LengthAwarePaginator
     {
         try {
-            return $this->bookRepo->paginateWithSearch(8, $request->only(['book_title', 'category_id', 'author_id']));
-        } catch (\Exception $e) {
+            return $this->bookRepository->paginateWithSearch(8, $indexBookRequest->only(['book_title', 'category_id', 'author_id']));
+        } catch (\Exception $exception) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,
                 'line' => __LINE__,
-                'message' => $e->getMessage(),
+                'message' => $exception->getMessage(),
             ]);
 
-            throw $e;
+            throw $exception;
         }
     }
 
     /**
      * Delete a book by ID.
      *
-     * @param int $id
+     * @param int $bookId
      * @return int
      * @throws \Exception
      */
-    public function deleteBook(int $id): int
+    public function deleteBook(int $bookId): int
     {
         try {
-            $target_book = $this->bookRepo->find($id);
+            $target_book = $this->bookRepository->find($bookId);
             Storage::disk('public')->delete($target_book->cover_url);
 
-            return $this->bookRepo->delete($id);
-        } catch (\Exception $e) {
+            return $this->bookRepository->delete($bookId);
+        } catch (\Exception $exception) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,
                 'line' => __LINE__,
-                'message' => $e->getMessage(),
+                'message' => $exception->getMessage(),
             ]);
 
-            throw $e;
+            throw $exception;
         }
     }
 
     /**
      * Store a new book.
      *
-     * @param array $data
+     * @param array $bookData
      * @return Model
      * @throws \Exception
      */
-    public function storeBook(array $data): Model
+    public function storeBook(array $bookData): Model
     {
         try {
-            $file = $data['cover_url'];
-            $fileName = 'book' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('cover_img', $fileName, 'public');
-            $data['cover_url'] = $path;
+            $coverImg = $bookData['cover_url'];
+            $newCoverImgName = 'book' . now()->format('YmdHis') . '.' . $coverImg->getClientOriginalExtension();
+            $coverImgPath = $coverImg->storeAs('cover_img', $newCoverImgName, 'public');
+            $bookData['cover_url'] = $coverImgPath;
 
-            return $this->bookRepo->create($data);
-        } catch (\Exception $e) {
+            return $this->bookRepository->create($bookData);
+        } catch (\Exception $exception) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,
                 'line' => __LINE__,
-                'message' => $e->getMessage(),
+                'message' => $exception->getMessage(),
             ]);
 
-            throw $e;
+            throw $exception;
         }
     }
 
     /**
      * Find a book by ID.
      *
-     * @param int $id
+     * @param int $bookId
      * @return Model
      * @throws \Exception
      */
-    public function findBookById(int $id): Model
+    public function findBookById(int $bookId): Model
     {
         try {
-            return $this->bookRepo->find($id);
-        } catch (\Exception $e) {
+            return $this->bookRepository->find($bookId);
+        } catch (\Exception $exception) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,
                 'line' => __LINE__,
-                'message' => $e->getMessage(),
+                'message' => $exception->getMessage(),
             ]);
 
-            throw $e;
+            throw $exception;
         }
     }
 
     /**
      * Update a book including its cover image.
      *
-     * @param int $id
-     * @param array $data
+     * @param int $bookId
+     * @param array $bookData
      * @return Model
      * @throws \Exception
      */
-    public function updateBook(int $id, array $data): Model
+    public function updateBook(int $bookId, array $bookData): Model
     {
         try {
-            $target_book = $this->bookRepo->find($id);
+            $target_book = $this->bookRepository->find($bookId);
             Storage::disk('public')->delete($target_book->cover_url);
 
-            $file = $data['cover_url'];
-            $fileName = 'book' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('cover_img', $fileName, 'public');
-            $data['cover_url'] = $path;
+            $coverImg = $bookData['cover_url'];
+            $newCoverImgName = 'book' . now()->format('YmdHis') . '.' . $coverImg->getClientOriginalExtension();
+            $coverImgPath = $coverImg->storeAs('cover_img', $newCoverImgName, 'public');
+            $bookData['cover_url'] = $coverImgPath;
 
-            return $this->bookRepo->update($id, $data);
-        } catch (\Exception $e) {
+            return $this->bookRepository->update($bookId, $bookData);
+        } catch (\Exception $exception) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,
                 'line' => __LINE__,
-                'message' => $e->getMessage(),
+                'message' => $exception->getMessage(),
             ]);
 
-            throw $e;
+            throw $exception;
         }
     }
 
     /**
      * Update a book without changing its cover image.
      *
-     * @param int $id
-     * @param array $data
+     * @param int $bookId
+     * @param array $bookData
      * @return Model
      * @throws \Exception
      */
-    public function updateBookWithoutCoverImg(int $id, array $data): Model
+    public function updateBookWithoutCoverImg(int $bookId, array $bookData): Model
     {
         try {
-            return $this->bookRepo->update($id, $data);
-        } catch (\Exception $e) {
+            return $this->bookRepository->update($bookId, $bookData);
+        } catch (\Exception $exception) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,
                 'line' => __LINE__,
-                'message' => $e->getMessage(),
+                'message' => $exception->getMessage(),
             ]);
 
-            throw $e;
+            throw $exception;
         }
     }
 }

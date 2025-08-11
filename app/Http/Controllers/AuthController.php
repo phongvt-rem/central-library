@@ -27,14 +27,14 @@ class AuthController extends Controller
     /**
      * Log in the user.
      *
-     * @param LoginRequest $request
+     * @param LoginRequest $loginRequest
      * @return RedirectResponse
      */
-    public function login(LoginRequest $request): RedirectResponse
+    public function login(LoginRequest $loginRequest): RedirectResponse
     {
-        $credentials = $request->validated();
+        $credentials = $loginRequest->validated();
         if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+            $loginRequest->session()->regenerate();
 
             return redirect()->intended('/books');
         }
@@ -47,14 +47,14 @@ class AuthController extends Controller
     /**
      * Log out the user.
      *
-     * @param Request $request
+     * @param Request $logoutRequest
      * @return RedirectResponse
      */
-    public function logout(Request $request): RedirectResponse
+    public function logout(Request $logoutRequest): RedirectResponse
     {
         Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $logoutRequest->session()->invalidate();
+        $logoutRequest->session()->regenerateToken();
 
         return redirect('/');
     }
@@ -62,18 +62,18 @@ class AuthController extends Controller
     /**
      * Register a new user.
      *
-     * @param RegisterRequest $request
+     * @param RegisterRequest $registerRequest
      * @return RedirectResponse
      */
-    public function register(RegisterRequest $request): RedirectResponse
+    public function register(RegisterRequest $registerRequest): RedirectResponse
     {
         try {
-            $userInfo = $request->validated();
+            $userInfo = $registerRequest->validated();
             $this->userService->createUser($userInfo);
 
             return redirect('/login')->with('success', 'User registered successfully. Please log in again!');
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
 
             return redirect('/login')->with('error', 'Failed to register new user. Please try again.');
         }

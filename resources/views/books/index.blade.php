@@ -73,9 +73,9 @@
                     <li class="page-item {{ $books->onFirstPage() ? 'disabled' : '' }}">
                         <a class="page-link" href="{{ $books->previousPageUrl() }}">Previous</a>
                     </li>
-                    @for ($i = 1; $i <= $books->lastPage(); $i++)
-                        <li class="page-item {{ $books->currentPage() == $i ? 'active' : '' }}">
-                            <a class="page-link" href="{{ $books->url($i) }}">{{ $i }}</a>
+                    @for ($pageIndex = 1; $pageIndex <= $books->lastPage(); $pageIndex++)
+                        <li class="page-item {{ $books->currentPage() == $pageIndex ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $books->url($pageIndex) }}">{{ $pageIndex }}</a>
                         </li>
                     @endfor
                     <li class="page-item {{ $books->hasMorePages() ? '' : 'disabled' }}">
