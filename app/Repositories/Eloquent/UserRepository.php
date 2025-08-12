@@ -22,37 +22,37 @@ class UserRepository implements UserRepositoryInterface
     /**
      * Find a user by ID or fail.
      *
-     * @param int $userId
+     * @param int $user_id
      * @return User
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    public function find($userId): User
+    public function find($user_id): User
     {
-        return $this->model->findOrFail($userId);
+        return $this->model->findOrFail($user_id);
     }
 
     /**
      * Create a new user record.
      *
-     * @param array $userData
+     * @param array $user_data
      * @return User
      */
-    public function create(array $userData): User
+    public function create(array $user_data): User
     {
-        return $this->model->create($userData);
+        return $this->model->create($user_data);
     }
 
     /**
      * Update an existing user by ID.
      *
-     * @param int $userId
-     * @param array $userData
+     * @param int $user_id
+     * @param array $user_data
      * @return User
      */
-    public function update($userId, array $userData): User
+    public function update($user_id, array $user_data): User
     {
-        $user = $this->find($userId);
-        $user->update($userData);
+        $user = $this->find($user_id);
+        $user->update($user_data);
 
         return $user;
     }

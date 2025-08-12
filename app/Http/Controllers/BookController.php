@@ -14,42 +14,42 @@ use Illuminate\View\View;
 
 class BookController extends Controller
 {
-    protected BookService $bookService;
-    protected AuthorService $authorService;
-    protected CategoryService $categoryService;
+    protected BookService $book_service;
+    protected AuthorService $author_service;
+    protected CategoryService $category_service;
 
     /**
      * Constructor.
      *
-     * @param BookService $bookService
-     * @param AuthorService $authorService
-     * @param CategoryService $categoryService
+     * @param BookService $book_service
+     * @param AuthorService $author_service
+     * @param CategoryService $category_service
      */
     public function __construct(
-        BookService $bookService,
-        AuthorService $authorService,
-        CategoryService $categoryService
+        BookService $book_service,
+        AuthorService $author_service,
+        CategoryService $category_service
     ) {
-        $this->bookService = $bookService;
-        $this->authorService = $authorService;
-        $this->categoryService = $categoryService;
+        $this->book_service = $book_service;
+        $this->author_service = $author_service;
+        $this->category_service = $category_service;
     }
 
     /**
      * Display a list of books.
      *
-     * @param Request $indexBookRequest
+     * @param Request $index_book_request
      * @return View|RedirectResponse
      */
-    public function index(Request $indexBookRequest): View|RedirectResponse
+    public function index(Request $index_book_request): View|RedirectResponse
     {
         try {
-            $books = $this->bookService->getAll($indexBookRequest);
+            $books = $this->book_service->getAll($index_book_request);
 
             return view('books.index', [
                 'books' => $books,
-                'author_list' => $this->authorService->getAll(),
-                'category_list' => $this->categoryService->getAll(),
+                'author_list' => $this->author_service->getAll(),
+                'category_list' => $this->category_service->getAll(),
             ]);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
@@ -70,8 +70,8 @@ class BookController extends Controller
                 'action' => route('books.store'),
                 'method' => 'POST',
                 'title' => 'Add New Book',
-                'author_list' => $this->authorService->getAll(),
-                'category_list' => $this->categoryService->getAll(),
+                'author_list' => $this->author_service->getAll(),
+                'category_list' => $this->category_service->getAll(),
             ]);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
@@ -83,14 +83,14 @@ class BookController extends Controller
     /**
      * Store a newly created book.
      *
-     * @param StoreBookRequest $storeBookrequest
+     * @param StoreBookRequest $store_book_request
      * @return RedirectResponse
      */
-    public function store(StoreBookRequest $storeBookrequest): RedirectResponse
+    public function store(StoreBookRequest $store_book_request): RedirectResponse
     {
         try {
-            $bookData = $storeBookrequest->validated();
-            $this->bookService->store($bookData);
+            $book_data = $store_book_request->validated();
+            $this->book_service->store($book_data);
 
             return redirect()->route('books.index')->with('success', 'Book created successfully!');
         } catch (\Exception $exception) {
@@ -103,19 +103,19 @@ class BookController extends Controller
     /**
      * Show the form to edit an existing book.
      *
-     * @param int $bookId
+     * @param int $book_id
      * @return View|RedirectResponse
      */
-    public function edit(int $bookId): View|RedirectResponse
+    public function edit(int $book_id): View|RedirectResponse
     {
         try {
             return view('books.book-form', [
                 'title' => 'Edit Book',
                 'method' => 'PUT',
-                'action' => route('books.update', $bookId),
-                'author_list' => $this->authorService->getAll(),
-                'category_list' => $this->categoryService->getAll(),
-                'book' => $this->bookService->findById($bookId),
+                'action' => route('books.update', $book_id),
+                'author_list' => $this->author_service->getAll(),
+                'category_list' => $this->category_service->getAll(),
+                'book' => $this->book_service->findById($book_id),
             ]);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
@@ -127,19 +127,19 @@ class BookController extends Controller
     /**
      * Update an existing book.
      *
-     * @param UpdateBookRequest $updateBookRequest
-     * @param int $bookId
+     * @param UpdateBookRequest $update_book_request
+     * @param int $book_id
      * @return RedirectResponse
      */
-    public function update(UpdateBookRequest $updateBookRequest, int $bookId): RedirectResponse
+    public function update(UpdateBookRequest $update_book_request, int $book_id): RedirectResponse
     {
         try {
-            $bookData = $updateBookRequest->validated();
+            $book_data = $update_book_request->validated();
 
-            if (isset($bookData['cover_url'])) {
-                $this->bookService->update($bookId, $bookData);
+            if (isset($book_data['cover_url'])) {
+                $this->book_service->update($book_id, $book_data);
             } else {
-                $this->bookService->updateWithoutCoverImg($bookId, $bookData);
+                $this->book_service->updateWithoutCoverImg($book_id, $book_data);
             }
 
             return redirect()->route('books.index')->with('success', 'Book edited successfully!');
@@ -153,13 +153,13 @@ class BookController extends Controller
     /**
      * Delete a book.
      *
-     * @param int $bookId
+     * @param int $book_id
      * @return RedirectResponse
      */
-    public function destroy(int $bookId): RedirectResponse
+    public function destroy(int $book_id): RedirectResponse
     {
         try {
-            $this->bookService->delete($bookId);
+            $this->book_service->delete($book_id);
 
             return redirect()->route('books.index')->with('success', 'Book deleted successfully!');
         } catch (\Exception $exception) {

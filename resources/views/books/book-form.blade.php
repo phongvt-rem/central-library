@@ -1,5 +1,5 @@
 @php
-    $isEdit = isset($book);
+    $is_edit = isset($book);
 @endphp
 @extends('layout')
 
@@ -41,7 +41,7 @@
                 @foreach ($author_list as $author)   
                     <option 
                     value={{ $author->id }}
-                    @if ($isEdit && $book->author_id == $author->id)
+                    @if ($is_edit && $book->author_id == $author->id)
                         selected
                     @endif
                     >
@@ -57,7 +57,7 @@
                 @foreach ($category_list as $category)   
                     <option 
                     value={{ $category->id }}
-                    @if ($isEdit && $book->category_id == $category->id)
+                    @if ($is_edit && $book->category_id == $category->id)
                         selected
                     @endif
                     >

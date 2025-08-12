@@ -11,29 +11,29 @@ use Illuminate\Database\Eloquent\Model;
 
 class BookService
 {
-    protected BookRepositoryInterface $bookRepository;
+    protected BookRepositoryInterface $book_repository;
 
     /**
      * Constructor.
      *
-     * @param BookRepositoryInterface $bookRepository
+     * @param BookRepositoryInterface $book_repository
      */
-    public function __construct(BookRepositoryInterface $bookRepository)
+    public function __construct(BookRepositoryInterface $book_repository)
     {
-        $this->bookRepository = $bookRepository;
+        $this->book_repository = $book_repository;
     }
 
     /**
      * Get all books with pagination and search filters.
      *
-     * @param Request $indexBookRequest
+     * @param Request $index_book_request
      * @return LengthAwarePaginator
      * @throws \Exception
      */
-    public function getAll(Request $indexBookRequest): LengthAwarePaginator
+    public function getAll(Request $index_book_request): LengthAwarePaginator
     {
         try {
-            return $this->bookRepository->paginateWithSearch(8, $indexBookRequest->only(['book_title', 'category_id', 'author_id']));
+            return $this->book_repository->paginateWithSearch(8, $index_book_request->only(['book_title', 'category_id', 'author_id']));
         } catch (\Exception $exception) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,
@@ -48,17 +48,17 @@ class BookService
     /**
      * Delete a book by ID.
      *
-     * @param int $bookId
+     * @param int $book_id
      * @return int
      * @throws \Exception
      */
-    public function delete(int $bookId): int
+    public function delete(int $book_id): int
     {
         try {
-            $target_book = $this->bookRepository->find($bookId);
+            $target_book = $this->book_repository->find($book_id);
             Storage::disk('public')->delete($target_book->cover_url);
 
-            return $this->bookRepository->delete($bookId);
+            return $this->book_repository->delete($book_id);
         } catch (\Exception $exception) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,
@@ -73,19 +73,19 @@ class BookService
     /**
      * Store a new book.
      *
-     * @param array $bookData
+     * @param array $book_data
      * @return Model
      * @throws \Exception
      */
-    public function store(array $bookData): Model
+    public function store(array $book_data): Model
     {
         try {
-            $coverImg = $bookData['cover_url'];
-            $newCoverImgName = 'book' . now()->format('YmdHis') . '.' . $coverImg->getClientOriginalExtension();
-            $coverImgPath = $coverImg->storeAs('cover_img', $newCoverImgName, 'public');
-            $bookData['cover_url'] = $coverImgPath;
+            $cover_img = $book_data['cover_url'];
+            $new_cover_img_name = 'book' . now()->format('YmdHis') . '.' . $cover_img->getClientOriginalExtension();
+            $cover_img_path = $cover_img->storeAs('cover_img', $new_cover_img_name, 'public');
+            $book_data['cover_url'] = $cover_img_path;
 
-            return $this->bookRepository->create($bookData);
+            return $this->book_repository->create($book_data);
         } catch (\Exception $exception) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,
@@ -100,14 +100,14 @@ class BookService
     /**
      * Find a book by ID.
      *
-     * @param int $bookId
+     * @param int $book_id
      * @return Model
      * @throws \Exception
      */
-    public function findById(int $bookId): Model
+    public function findById(int $book_id): Model
     {
         try {
-            return $this->bookRepository->find($bookId);
+            return $this->book_repository->find($book_id);
         } catch (\Exception $exception) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,
@@ -122,23 +122,23 @@ class BookService
     /**
      * Update a book including its cover image.
      *
-     * @param int $bookId
-     * @param array $bookData
+     * @param int $book_id
+     * @param array $book_data
      * @return Model
      * @throws \Exception
      */
-    public function update(int $bookId, array $bookData): Model
+    public function update(int $book_id, array $book_data): Model
     {
         try {
-            $target_book = $this->bookRepository->find($bookId);
+            $target_book = $this->book_repository->find($book_id);
             Storage::disk('public')->delete($target_book->cover_url);
 
-            $coverImg = $bookData['cover_url'];
-            $newCoverImgName = 'book' . now()->format('YmdHis') . '.' . $coverImg->getClientOriginalExtension();
-            $coverImgPath = $coverImg->storeAs('cover_img', $newCoverImgName, 'public');
-            $bookData['cover_url'] = $coverImgPath;
+            $cover_img = $book_data['cover_url'];
+            $new_cover_img_name = 'book' . now()->format('YmdHis') . '.' . $cover_img->getClientOriginalExtension();
+            $cover_img_path = $cover_img->storeAs('cover_img', $new_cover_img_name, 'public');
+            $book_data['cover_url'] = $cover_img_path;
 
-            return $this->bookRepository->update($bookId, $bookData);
+            return $this->book_repository->update($book_id, $book_data);
         } catch (\Exception $exception) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,
@@ -153,15 +153,15 @@ class BookService
     /**
      * Update a book without changing its cover image.
      *
-     * @param int $bookId
-     * @param array $bookData
+     * @param int $book_id
+     * @param array $book_data
      * @return Model
      * @throws \Exception
      */
-    public function updateWithoutCoverImg(int $bookId, array $bookData): Model
+    public function updateWithoutCoverImg(int $book_id, array $book_data): Model
     {
         try {
-            return $this->bookRepository->update($bookId, $bookData);
+            return $this->book_repository->update($book_id, $book_data);
         } catch (\Exception $exception) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,

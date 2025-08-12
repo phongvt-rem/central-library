@@ -8,29 +8,29 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserService
 {
-    protected UserRepositoryInterface $userRepository;
+    protected UserRepositoryInterface $user_repository;
 
     /**
      * Constructor.
      *
-     * @param UserRepositoryInterface $userRepository
+     * @param UserRepositoryInterface $user_repository
      */
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct(UserRepositoryInterface $user_repository)
     {
-        $this->userRepository = $userRepository;
+        $this->user_repository = $user_repository;
     }
 
     /**
      * Create a new user.
      *
-     * @param array $userData
+     * @param array $user_data
      * @return Model
      * @throws \Exception
      */
-    public function create(array $userData): Model
+    public function create(array $user_data): Model
     {
         try {
-            return $this->userRepository->create($userData);
+            return $this->user_repository->create($user_data);
         } catch (\Exception $exception) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,

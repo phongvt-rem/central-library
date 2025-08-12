@@ -8,16 +8,16 @@ use Illuminate\Support\Collection;
 
 class AuthorService
 {
-    protected AuthorRepositoryInterface $authorRepository;
+    protected AuthorRepositoryInterface $author_repository;
 
     /**
      * Constructor.
      *
-     * @param AuthorRepositoryInterface $authorRepository
+     * @param AuthorRepositoryInterface $author_repository
      */
-    public function __construct(AuthorRepositoryInterface $authorRepository)
+    public function __construct(AuthorRepositoryInterface $author_repository)
     {
-        $this->authorRepository = $authorRepository;
+        $this->author_repository = $author_repository;
     }
 
     /**
@@ -29,7 +29,7 @@ class AuthorService
     public function getAll(): Collection
     {
         try {
-            return $this->authorRepository->all();
+            return $this->author_repository->all();
         } catch (\Exception $exception) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,

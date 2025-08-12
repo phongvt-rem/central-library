@@ -12,29 +12,29 @@ use Illuminate\Http\RedirectResponse;
 
 class AuthController extends Controller
 {
-    protected UserService $userService;
+    protected UserService $user_service;
 
     /**
      * Constructor.
      *
-     * @param UserService $userService
+     * @param UserService $user_service
      */
-    public function __construct(UserService $userService)
+    public function __construct(UserService $user_service)
     {
-        $this->userService = $userService;
+        $this->user_service = $user_service;
     }
 
     /**
      * Log in the user.
      *
-     * @param LoginRequest $loginRequest
+     * @param LoginRequest $login_request
      * @return RedirectResponse
      */
-    public function login(LoginRequest $loginRequest): RedirectResponse
+    public function login(LoginRequest $login_request): RedirectResponse
     {
-        $credentials = $loginRequest->validated();
+        $credentials = $login_request->validated();
         if (Auth::attempt($credentials)) {
-            $loginRequest->session()->regenerate();
+            $login_request->session()->regenerate();
 
             return redirect()->intended('/books');
         }
@@ -47,14 +47,14 @@ class AuthController extends Controller
     /**
      * Log out the user.
      *
-     * @param Request $logoutRequest
+     * @param Request $logout_request
      * @return RedirectResponse
      */
-    public function logout(Request $logoutRequest): RedirectResponse
+    public function logout(Request $logout_request): RedirectResponse
     {
         Auth::logout();
-        $logoutRequest->session()->invalidate();
-        $logoutRequest->session()->regenerateToken();
+        $logout_request->session()->invalidate();
+        $logout_request->session()->regenerateToken();
 
         return redirect('/');
     }
@@ -62,14 +62,14 @@ class AuthController extends Controller
     /**
      * Register a new user.
      *
-     * @param RegisterRequest $registerRequest
+     * @param RegisterRequest $register_request
      * @return RedirectResponse
      */
-    public function register(RegisterRequest $registerRequest): RedirectResponse
+    public function register(RegisterRequest $register_request): RedirectResponse
     {
         try {
-            $userInfo = $registerRequest->validated();
-            $this->userService->create($userInfo);
+            $user_info = $register_request->validated();
+            $this->user_service->create($user_info);
 
             return redirect('/login')->with('success', 'User registered successfully. Please log in again!');
         } catch (\Exception $exception) {

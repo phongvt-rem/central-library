@@ -8,16 +8,16 @@ use Illuminate\Support\Collection;
 
 class CategoryService
 {
-    protected CategoryRepositoryInterface $categoryRepository;
+    protected CategoryRepositoryInterface $category_repository;
 
     /**
      * Constructor.
      *
-     * @param CategoryRepositoryInterface $categoryRepository
+     * @param CategoryRepositoryInterface $category_repository
      */
-    public function __construct(CategoryRepositoryInterface $categoryRepository)
+    public function __construct(CategoryRepositoryInterface $category_repository)
     {
-        $this->categoryRepository = $categoryRepository;
+        $this->category_repository = $category_repository;
     }
 
     /**
@@ -29,7 +29,7 @@ class CategoryService
     public function getAll(): Collection
     {
         try {
-            return $this->categoryRepository->all();
+            return $this->category_repository->all();
         } catch (\Exception $exception) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,

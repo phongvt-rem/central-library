@@ -10,13 +10,13 @@ interface BookRepositoryInterface
 {
     public function all(): Collection;
 
-    public function find(int $bookId): Model;
+    public function find(int $book_id): Model;
 
-    public function create(array $bookData): Model;
+    public function create(array $book_data): Model;
 
-    public function update(int $bookId, array $bookData): Model;
+    public function update(int $book_id, array $book_data): Model;
 
-    public function delete(int $bookId): int;
+    public function delete(int $book_id): int;
 
-    public function paginateWithSearch(int $pageSize, array $filterConditions = []): LengthAwarePaginator;
+    public function paginateWithSearch(int $page_size, array $filter_conditions = []): LengthAwarePaginator;
 }
