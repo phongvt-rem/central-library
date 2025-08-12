@@ -4,17 +4,17 @@ namespace App\Repositories\Interface;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use App\Models\Book;
+use Illuminate\Database\Eloquent\Model;
 
 interface BookRepositoryInterface
 {
     public function all(): Collection;
 
-    public function find(int $bookId): Book;
+    public function find(int $bookId): Model;
 
-    public function create(array $bookData): Book;
+    public function create(array $bookData): Model;
 
-    public function update(int $bookId, array $bookData): Book;
+    public function update(int $bookId, array $bookData): Model;
 
     public function delete(int $bookId): int;
 
