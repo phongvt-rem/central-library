@@ -32,9 +32,9 @@ Route::middleware('auth')->prefix('books')->group(function () {
     Route::post('/store', [BookController::class, 'store'])->name('books.store');
 
     // UPDATE
-    Route::get('edit/{id}', [BookController::class, 'edit'])->name('books.edit');
-    Route::put('/{id}', [BookController::class, 'update'])->name('books.update');
+    Route::get('edit/{bookId}', [BookController::class, 'edit'])->name('books.edit');
+    Route::put('/{bookId}', [BookController::class, 'update'])->name('books.update');
 
     // DELETE
-    Route::delete('/{id}', [BookController::class, 'destroy'])->name('books.destroy'); 
+    Route::delete('/{bookId}', [BookController::class, 'destroy'])->name('books.destroy'); 
 });
