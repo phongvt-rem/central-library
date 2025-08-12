@@ -4,27 +4,40 @@ namespace App\Services;
 
 use App\Repositories\Interface\CategoryRepositoryInterface;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Collection;
 
 class CategoryService
 {
-    protected CategoryRepositoryInterface $categoryRepo;
+    protected CategoryRepositoryInterface $category_repository;
 
-    public function __construct(CategoryRepositoryInterface $categoryRepo)
+    /**
+     * Constructor.
+     *
+     * @param CategoryRepositoryInterface $category_repository
+     */
+    public function __construct(CategoryRepositoryInterface $category_repository)
     {
-        $this->categoryRepo = $categoryRepo;
+        $this->category_repository = $category_repository;
     }
 
-    public function getAllCategories()
+    /**
+     * Get all categories.
+     *
+     * @return Collection
+     * @throws \Exception
+     */
+    public function getAll(): Collection
     {
-        try {  
-            return $this->categoryRepo->all();
-        } catch (\Exception $e) {
+        try {
+            return $this->category_repository->all();
+        } catch (\Exception $exception) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,
                 'line' => __LINE__,
-                'message' => $e->getMessage(),
+                'message' => $exception->getMessage(),
             ]);
-            throw $e;
+
+            throw $exception;
         }
     }
 }

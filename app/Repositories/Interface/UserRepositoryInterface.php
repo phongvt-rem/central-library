@@ -2,11 +2,13 @@
 
 namespace App\Repositories\Interface;
 
+use App\Models\User;
+
 interface UserRepositoryInterface
 {
-    public function find($id);
+    public function find(int $user_id): User;
 
-    public function create(array $data);
+    public function create(array $user_data): User;
 
-    public function update($id, array $data);
+    public function update(int $user_id, array $user_data): User;
 }

@@ -4,27 +4,40 @@ namespace App\Services;
 
 use App\Repositories\Interface\AuthorRepositoryInterface;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Collection;
 
 class AuthorService
 {
-    protected AuthorRepositoryInterface $authorRepo;
+    protected AuthorRepositoryInterface $author_repository;
 
-    public function __construct(AuthorRepositoryInterface $authorRepo)
+    /**
+     * Constructor.
+     *
+     * @param AuthorRepositoryInterface $author_repository
+     */
+    public function __construct(AuthorRepositoryInterface $author_repository)
     {
-        $this->authorRepo = $authorRepo;
+        $this->author_repository = $author_repository;
     }
 
-    public function getAllAuthors()
+    /**
+     * Get all authors.
+     *
+     * @return Collection
+     * @throws \Exception
+     */
+    public function getAll(): Collection
     {
         try {
-            return $this->authorRepo->all();
-        } catch (\Exception $e) {
+            return $this->author_repository->all();
+        } catch (\Exception $exception) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,
                 'line' => __LINE__,
-                'message' => $e->getMessage(),
+                'message' => $exception->getMessage(),
             ]);
-            throw $e;
+
+            throw $exception;
         }
     }
 }

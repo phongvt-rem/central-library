@@ -4,27 +4,41 @@ namespace App\Services;
 
 use App\Repositories\Interface\UserRepositoryInterface;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Model;
 
 class UserService
 {
-    protected UserRepositoryInterface $userRepo;
+    protected UserRepositoryInterface $user_repository;
 
-    public function __construct(UserRepositoryInterface $userRepo)
+    /**
+     * Constructor.
+     *
+     * @param UserRepositoryInterface $user_repository
+     */
+    public function __construct(UserRepositoryInterface $user_repository)
     {
-        $this->userRepo = $userRepo;
+        $this->user_repository = $user_repository;
     }
 
-    public function createUser(array $data)
+    /**
+     * Create a new user.
+     *
+     * @param array $user_data
+     * @return Model
+     * @throws \Exception
+     */
+    public function create(array $user_data): Model
     {
         try {
-            return $this->userRepo->create($data);
-        } catch (\Exception $e) {
+            return $this->user_repository->create($user_data);
+        } catch (\Exception $exception) {
             Log::error('ERROR: ', [
                 'method' => __METHOD__,
                 'line' => __LINE__,
-                'message' => $e->getMessage(),
+                'message' => $exception->getMessage(),
             ]);
-            throw $e;
+
+            throw $exception;
         }
     }
 }
